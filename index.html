@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Trommer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      background: #161a14;
+      color: #c8cfc4;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+      line-height: 1.7;
+    }
+
+    a { color: inherit; }
+
+    header { margin-bottom: 3.5rem; }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #e8ede4;
+      margin-bottom: 0.3rem;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #5a6355;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 1rem;
+      align-items: center;
+    }
+
+    .subtitle a {
+      color: #5a6355;
+      text-decoration: none;
+      border-bottom: 1px solid #2e3829;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .subtitle a:hover { color: #a8b8a0; border-color: #a8b8a0; }
+    .dot { color: #2e3829; }
+
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #3d4d38;
+      margin-bottom: 1.25rem;
+    }
+
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid #222a1e;
+      margin-bottom: 0;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 0.65rem 1.1rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.83rem;
+      font-weight: 400;
+      color: #4a5545;
+      cursor: pointer;
+      margin-bottom: -1px;
+      transition: color 0.15s, border-color 0.15s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { color: #a8b8a0; }
+    .tab-btn.active { color: #c8cfc4; border-bottom-color: #6a9a5a; }
+
+    .tab-panel { display: none; padding-top: 2.5rem; }
+    .tab-panel.active { display: block; }
+
+    .project-title {
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: #e8ede4;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-lead {
+      font-size: 0.9rem;
+      color: #7a8a74;
+      margin-bottom: 2rem;
+      max-width: 580px;
+      line-height: 1.8;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      padding: 1.25rem 0;
+      border-top: 1px solid #1e2a1a;
+      border-bottom: 1px solid #1e2a1a;
+      margin-bottom: 2rem;
+    }
+
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      color: #9ab88a;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.72rem;
+      color: #4a5545;
+      display: block;
+      margin-top: 0.1rem;
+    }
+
+    .body-section { margin-bottom: 2rem; }
+
+    .body-section h3 {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #4a5545;
+      margin-bottom: 0.75rem;
+    }
+
+    .body-section p {
+      font-size: 0.88rem;
+      color: #8a9884;
+      line-height: 1.75;
+    }
+
+    .body-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .body-section li {
+      font-size: 0.88rem;
+      color: #8a9884;
+      padding-left: 1.1rem;
+      position: relative;
+      line-height: 1.65;
+    }
+
+    .body-section li::before { content: '–'; position: absolute; left: 0; color: #3d4d38; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-top: 0.5rem; }
+
+    th {
+      text-align: left;
+      font-weight: 400;
+      color: #4a5545;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.75rem 0.4rem 0;
+      border-bottom: 1px solid #1e2a1a;
+    }
+
+    td {
+      padding: 0.5rem 0.75rem 0.5rem 0;
+      color: #8a9884;
+      border-bottom: 1px solid #1a221a;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+    }
+
+    td:first-child { color: #b8c8b4; font-family: 'Inter', sans-serif; font-size: 0.83rem; }
+    .highlight-row td { color: #9ab88a; }
+    .highlight-row td:first-child { color: #c8e0b8; }
+
+    .code-block {
+      background: #0e1210;
+      border: 1px solid #1e2a1a;
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      color: #7a9870;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    .code-block .key { color: #9ab88a; }
+    .code-block .val { color: #c8e0b8; }
+
+    .plot-grid { display: flex; flex-direction: column; gap: 1.75rem; margin-top: 0.5rem; }
+
+    .plot-item { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .plot-item img {
+      width: 100%;
+      border-radius: 4px;
+      border: 1px solid #1e2a1a;
+      background: #0e1210;
+    }
+
+    .plot-caption {
+      font-size: 0.75rem;
+      color: #4a5545;
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    .plot-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 500px) { .plot-row { grid-template-columns: 1fr; } }
+
+    .project-links {
+      display: flex;
+      gap: 1.25rem;
+      padding-top: 2rem;
+      border-top: 1px solid #1e2a1a;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .project-links a {
+      font-size: 0.82rem;
+      color: #9ab88a;
+      text-decoration: none;
+      border-bottom: 1px solid #3a5030;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .project-links a:hover { color: #c8e0b8; border-color: #6a9a5a; }
+    .project-links a.muted { color: #4a5545; border-color: #2a322a; }
+    .project-links a.muted:hover { color: #7a8a74; border-color: #4a5545; }
+
+    footer {
+      margin-top: 5rem;
+      padding-top: 2rem;
+      border-top: 1px solid #1e2a1a;
+      font-size: 0.8rem;
+      color: #3d4d38;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    footer a {
+      color: #3d4d38;
+      text-decoration: none;
+      border-bottom: 1px solid #222a1e;
+      transition: color 0.15s;
+    }
+    footer a:hover { color: #7a8a74; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Alex Trommer</h1>
+    <div class="subtitle">
+      <span>Sports Analytics</span>
+      <span class="dot">·</span>
+      <span>University of Michigan</span>
+      <span class="dot">·</span>
+      <a href="mailto:atrommer@umich.edu">atrommer@umich.edu</a>
+      <span class="dot">·</span>
+      <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </header>
+
+  <p class="section-label">Projects</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('league', this)">League Winner Predictor</button>
+    <button class="tab-btn" onclick="switchTab('corners', this)">Corner Kick Analysis</button>
+  </div>
+
+  <!-- ── Tab 1: League Winner Predictor ── -->
+  <div class="tab-panel active" id="tab-league">
+    <h2 class="project-title">League Winner Predictor</h2>
+    <p class="project-lead">A KNN classifier that predicts whether a forward's team won their domestic league, trained on 88,310 player-season records across seven European leagues and five seasons. Using only goals and shots on target as features, the model achieves 95.45% accuracy.</p>
+
+    <div class="stats">
+      <div>
+        <span class="stat-value">95.45%</span>
+        <span class="stat-label">Final accuracy</span>
+      </div>
+      <div>
+        <span class="stat-value">94.35%</span>
+        <span class="stat-label">Baseline accuracy</span>
+      </div>
+      <div>
+        <span class="stat-value">88,310</span>
+        <span class="stat-label">Player-season records</span>
+      </div>
+      <div>
+        <span class="stat-value">7</span>
+        <span class="stat-label">Leagues · 5 seasons</span>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Dataset</h3>
+      <p>Player-season records from the Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Eredivisie, and Primeira Liga. The model is restricted to forwards with at least five 90-minute appearances, where the goal-scoring signal is strongest. The 2019–20 season is excluded due to the Eredivisie being suspended mid-season.</p>
+    </div>
+
+    <div class="body-section">
+      <h3>The signal</h3>
+      <p>Winners and non-winners differ sharply in raw attacking output — large enough to drive a high-accuracy classifier with just two features.</p>
+      <table style="margin-top:0.75rem">
+        <thead><tr><th>Group</th><th>Avg Goals</th><th>Avg Shots on Target</th></tr></thead>
+        <tbody>
+          <tr><td>Non-winners</td><td>6.60</td><td>16.96</td></tr>
+          <tr class="highlight-row"><td>Winners</td><td>13.59</td><td>29.37</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="body-section">
+      <h3>Data cleaning</h3>
+      <ul>
+        <li>Missing goals filled with 0; mislabelled columns corrected; squad-total rows removed</li>
+        <li>Records with goals but zero shots on target — indicating missing data rather than true zeros — imputed using a linear regression model fitted per league</li>
+        <li>Primeira Liga had the most affected rows (452), followed by Ligue 1 (61)</li>
+      </ul>
+    </div>
+
+    <div class="body-section">
+      <h3>Model</h3>
+      <p>A KNN pipeline with preprocessing and GridSearchCV over 25 neighbor values, 2 weight schemes, and 3 distance metrics (150 combinations, 5-fold CV).</p>
+      <div class="code-block">
+<span class="key">Features:</span>     <span class="val">Shots On Target, Goals, Season (one-hot encoded)</span>
+<span class="key">Scaler:</span>      <span class="val">StandardScaler on numerical features</span>
+<span class="key">Search:</span>      <span class="val">GridSearchCV — 5-fold CV, accuracy scoring</span>
+
+<span class="key">Best params:</span>
+  <span class="key">n_neighbors</span>  <span class="val">11</span>
+  <span class="key">metric</span>       <span class="val">euclidean</span>
+  <span class="key">weights</span>      <span class="val">uniform</span>
+  <span class="key">CV score</span>     <span class="val">0.9545</span>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Key findings</h3>
+      <ul>
+        <li>Baseline (goals + shots on target only) already achieved 94.35% — reflecting how cleanly elite forwards separate from the rest of the distribution</li>
+        <li>Adding one-hot encoding on season pushed accuracy to 95.45% — year-to-year variation in league competitiveness is a meaningful signal</li>
+        <li>Optimal k=11 suggests the decision boundary benefits from moderate smoothing; lower k values overfit the noisy periphery of each class</li>
+        <li>Euclidean distance with uniform weights outperformed distance-weighted variants, indicating the feature space is well-conditioned after normalization</li>
+      </ul>
+    </div>
+
+    <div class="project-links">
+      <a href="https://alextrommer.github.io/FootballStats/" target="_blank" rel="noopener">View project ↗</a>
+      <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener" class="muted">GitHub ↗</a>
+    </div>
+  </div>
+
+  <!-- ── Tab 2: Corner Kick Analysis ── -->
+  <div class="tab-panel" id="tab-corners">
+    <h2 class="project-title">Ideal Corner Kick Delivery Zones</h2>
+    <p class="project-lead">Where should you aim a corner kick? Using StatsBomb open event data, every delivery is mapped onto a 120×80 pitch and statistical testing identifies which zones produce a meaningful improvement over the 2.9% baseline success rate.</p>
+
+    <div class="stats">
+      <div>
+        <span class="stat-value">GA3</span>
+        <span class="stat-label">Only significant zone</span>
+      </div>
+      <div>
+        <span class="stat-value">6.2%</span>
+        <span class="stat-label">GA3 success rate</span>
+      </div>
+      <div>
+        <span class="stat-value">2.9%</span>
+        <span class="stat-label">Baseline rate</span>
+      </div>
+      <div>
+        <span class="stat-value">p &lt; 0.0001</span>
+        <span class="stat-label">GA3 z-test</span>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Data & setup</h3>
+      <p>Corner kick events from StatsBomb open data. A success is defined as a goal within 10 seconds of the corner. All corners taken from the bottom side of the pitch have their Y coordinates mirrored so every delivery is analysed relative to the same goal. Short corners — where the ball is played to a nearby teammate rather than delivered into the box — are isolated as a separate category.</p>
+    </div>
+
+    <div class="body-section">
+      <h3>Zone classification</h3>
+      <p>Zones follow the heuristic from Casal et al. (2019), dividing the attacking end of the pitch into nine named regions.</p>
+      <table style="margin-top:0.75rem">
+        <thead><tr><th>Zone</th><th>Description</th><th>X</th><th>Y</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td>GA3</td><td>Six-yard box, back post</td><td>114–120</td><td>30–36</td></tr>
+          <tr><td>GA2</td><td>Six-yard box, centre</td><td>114–120</td><td>36–44</td></tr>
+          <tr><td>GA1</td><td>Six-yard box, near post</td><td>114–120</td><td>44–50</td></tr>
+          <tr><td>CA3</td><td>Central area, back post</td><td>108–114</td><td>30–36</td></tr>
+          <tr><td>CA2</td><td>Central area, centre</td><td>108–114</td><td>36–44</td></tr>
+          <tr><td>CA1</td><td>Central area, near post</td><td>108–114</td><td>44–50</td></tr>
+          <tr><td>FZ</td><td>Front zone</td><td>102–120</td><td>50–62</td></tr>
+          <tr><td>BZ</td><td>Back zone</td><td>102–120</td><td>18–30</td></tr>
+          <tr><td>Edge</td><td>Edge of area</td><td>100–108</td><td>30–50</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="body-section">
+      <h3>Delivery locations</h3>
+      <div class="plot-grid">
+        <div class="plot-item">
+          <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/delivery_scatter.png" alt="Corner delivery locations" loading="lazy" />
+          <span class="plot-caption">All delivery endpoints. Green = goal within 10 s, red = no goal. Successful deliveries concentrate near the back post of the six-yard box.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Swing type</h3>
+      <ul>
+        <li>Inswinging: 11,559 attempts, 3.00% success rate</li>
+        <li>Outswinging: 22,487 attempts, 2.84% success rate</li>
+        <li>Chi-squared p = 0.423 — swing type alone has no significant effect on success</li>
+      </ul>
+    </div>
+
+    <div class="body-section">
+      <h3>In-box vs out-of-box</h3>
+      <table style="margin-top:0.5rem">
+        <thead><tr><th>Delivery type</th><th>Count</th><th>Success rate</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td>In box</td><td>27,215</td><td>3.19%</td></tr>
+          <tr><td>Out of box</td><td>6,831</td><td>1.73%</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.75rem">Chi-squared p = 1.53×10⁻¹⁰ — in-box deliveries significantly outperform out-of-box deliveries.</p>
+    </div>
+
+    <div class="body-section">
+      <h3>Success rate by zone</h3>
+      <div class="plot-grid">
+        <div class="plot-item">
+          <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/zone_heatmap.png" alt="Corner kick success rate by zone" loading="lazy" />
+          <span class="plot-caption">GA3 (back post, six-yard box) leads at 6.2% — more than double any other zone and the only zone to test as statistically significant.</span>
+        </div>
+        <div class="plot-item">
+          <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/short_vs_zones.png" alt="Short corners vs delivery zones" loading="lazy" />
+          <span class="plot-caption">Short corner deliveries (1.87%) underperform every named in-box zone and fall below the overall baseline — the worst strategy across all scenarios.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Zone by swing type</h3>
+      <table style="margin-top:0.5rem">
+        <thead><tr><th>Zone</th><th>Swing</th><th>Count</th><th>Success rate</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td>GA3</td><td>inswinging</td><td>329</td><td>6.99%</td></tr>
+          <tr class="highlight-row"><td>GA3</td><td>outswinging</td><td>542</td><td>5.72%</td></tr>
+          <tr><td>CA3</td><td>inswinging</td><td>717</td><td>4.32%</td></tr>
+          <tr><td>CA2</td><td>outswinging</td><td>4,041</td><td>4.31%</td></tr>
+          <tr><td>Edge</td><td>inswinging</td><td>421</td><td>3.56%</td></tr>
+          <tr><td>GA2</td><td>inswinging</td><td>1,774</td><td>3.27%</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:0.75rem">GA3 inswinging vs all others: z = 4.451, p &lt; 0.0001. The zone × swing type interaction model shows no significant interaction effects — GA3 leads under both swing types.</p>
+      <div class="plot-grid" style="margin-top:1rem">
+        <div class="plot-item">
+          <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/swing_zone_heatmap.png" alt="Success rate by zone and swing type" loading="lazy" />
+          <span class="plot-caption">GA3 tops both halves — 7.0% inswinging, 5.7% outswinging. No other zone is consistently strong across swing types.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Logistic regression</h3>
+      <p>Two logistic models were fitted — main effects (zone + swing type) and interactions (zone × swing type). In both, only the GA3 coefficient is statistically significant. All other zones and swing type show no significant independent effect on success probability.</p>
+      <table style="margin-top:0.75rem">
+        <thead><tr><th>Term</th><th>Coef</th><th>p-value</th></tr></thead>
+        <tbody>
+          <tr><td>Intercept (BZ baseline)</td><td>−3.557</td><td>&lt; 0.001</td></tr>
+          <tr class="highlight-row"><td>GA3</td><td>+0.864</td><td>&lt; 0.001</td></tr>
+          <tr><td>CA2</td><td>+0.373</td><td>0.075</td></tr>
+          <tr><td>CA3</td><td>+0.266</td><td>0.252</td></tr>
+          <tr><td>Outswinging</td><td>−0.038</td><td>0.579</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="body-section">
+      <h3>Optimal delivery coordinate</h3>
+      <p>Degree-9 polynomial fits on binned success rates across end_x and end_y coordinates narrow the optimal delivery point to approximately <strong style="color:#9ab88a">x ≈ 113, y ≈ 33</strong> — deep into the six-yard box, back-post side.</p>
+      <div class="plot-row">
+        <div class="plot-item">
+          <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/poly_end_x.png" alt="Success rate vs end_x" loading="lazy" />
+          <span class="plot-caption">Success rate vs end X. Polynomial fit peaks near x ≈ 113.</span>
+        </div>
+        <div class="plot-item">
+          <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/poly_end_y.png" alt="Success rate vs end_y" loading="lazy" />
+          <span class="plot-caption">Success rate vs end Y. Polynomial fit peaks near y ≈ 33 — back-post side.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="body-section">
+      <h3>Recipient body part</h3>
+      <p>Headers at the far post dominate successful outcomes. Non-header contacts (chest, foot) consistently underperform regardless of zone or swing type.</p>
+      <table style="margin-top:0.75rem">
+        <thead><tr><th>Post</th><th>Swing</th><th>Body part</th><th>Count</th><th>Rate</th></tr></thead>
+        <tbody>
+          <tr class="highlight-row"><td>Far post</td><td>outswinging</td><td>Head</td><td>2,485</td><td>8.61%</td></tr>
+          <tr class="highlight-row"><td>Far post</td><td>inswinging</td><td>Head</td><td>1,378</td><td>8.35%</td></tr>
+          <tr class="highlight-row"><td>Near post</td><td>inswinging</td><td>Head</td><td>1,042</td><td>8.06%</td></tr>
+          <tr><td>Near post</td><td>outswinging</td><td>Head</td><td>1,897</td><td>7.33%</td></tr>
+          <tr><td>Near post</td><td>outswinging</td><td>Other</td><td>4,793</td><td>1.79%</td></tr>
+          <tr><td>Far post</td><td>outswinging</td><td>Other</td><td>12,146</td><td>1.48%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="project-links">
+      <a href="https://github.com/AlexTrommer/ideal_corner_kicks" target="_blank" rel="noopener">View on GitHub ↗</a>
+      <a href="https://www.tandfonline.com/doi/full/10.1080/24748668.2019.1677329" target="_blank" rel="noopener" class="muted">Casal et al. (2019) ↗</a>
+    </div>
+  </div>
+
+  <footer>
+    <a href="mailto:atrommer@umich.edu">atrommer@umich.edu</a>
+    <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+  <script>
+    function switchTab(id, btn) {
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('tab-' + id).classList.add('active');
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
