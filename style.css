@@ -1,0 +1,309 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  background: #161a14;
+  color: #d8dfd4;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+  line-height: 1.7;
+}
+
+a { color: inherit; }
+
+/* ── Header ── */
+header { margin-bottom: 3.5rem; }
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #e8ede4;
+  margin-bottom: 0.3rem;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: #8a9e82;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+
+.subtitle a {
+  color: #8a9e82;
+  text-decoration: none;
+  border-bottom: 1px solid #2e3829;
+  transition: color 0.15s, border-color 0.15s;
+}
+.subtitle a:hover { color: #a8b8a0; border-color: #a8b8a0; }
+.dot { color: #4a5a44; }
+
+/* ── Nav ── */
+nav {
+  display: flex;
+  border-bottom: 1px solid #222a1e;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  display: inline-block;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.83rem;
+  font-weight: 400;
+  color: #7a8f74;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-link:hover { color: #a8b8a0; }
+.nav-link.active { color: #e8ede4; border-bottom-color: #7ab86a; }
+
+/* ── Section label ── */
+.section-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6a7d64;
+  margin-bottom: 1.25rem;
+}
+
+/* ── Project page ── */
+.project-title {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: #e8ede4;
+  margin-bottom: 0.5rem;
+}
+
+.project-lead {
+  font-size: 0.9rem;
+  color: #9aaa94;
+  margin-bottom: 2rem;
+  max-width: 580px;
+  line-height: 1.8;
+}
+
+.stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding: 1.25rem 0;
+  border-top: 1px solid #1e2a1a;
+  border-bottom: 1px solid #1e2a1a;
+  margin-bottom: 2rem;
+}
+
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.1rem;
+  color: #9ab88a;
+  display: block;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  color: #7a8f74;
+  display: block;
+  margin-top: 0.1rem;
+}
+
+.body-section { margin-bottom: 2rem; }
+
+.body-section h3 {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #7a8f74;
+  margin-bottom: 0.75rem;
+}
+
+.body-section p {
+  font-size: 0.88rem;
+  color: #b0bfaa;
+  line-height: 1.75;
+}
+
+.body-section ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+
+.body-section li {
+  font-size: 0.88rem;
+  color: #b0bfaa;
+  padding-left: 1.1rem;
+  position: relative;
+  line-height: 1.65;
+}
+
+.body-section li::before { content: '–'; position: absolute; left: 0; color: #3d4d38; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-top: 0.5rem; }
+
+th {
+  text-align: left;
+  font-weight: 400;
+  color: #7a8f74;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.75rem 0.4rem 0;
+  border-bottom: 1px solid #1e2a1a;
+}
+
+td {
+  padding: 0.5rem 0.75rem 0.5rem 0;
+  color: #b0bfaa;
+  border-bottom: 1px solid #1a221a;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+}
+
+td:first-child { color: #ccdcc8; font-family: 'Inter', sans-serif; font-size: 0.83rem; }
+.highlight-row td { color: #9ab88a; }
+.highlight-row td:first-child { color: #c8e0b8; }
+
+.code-block {
+  background: #0e1210;
+  border: 1px solid #1e2a1a;
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.76rem;
+  color: #7a9870;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin-top: 0.5rem;
+}
+
+.code-block .key { color: #9ab88a; }
+.code-block .val { color: #c8e0b8; }
+
+.plot-grid { display: flex; flex-direction: column; gap: 1.75rem; margin-top: 0.5rem; }
+
+.plot-item { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.plot-item img {
+  width: 100%;
+  border-radius: 4px;
+  border: 1px solid #1e2a1a;
+  background: #0e1210;
+}
+
+.plot-caption {
+  font-size: 0.75rem;
+  color: #7a8f74;
+  font-style: italic;
+  line-height: 1.55;
+}
+
+.plot-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 500px) { .plot-row { grid-template-columns: 1fr; } }
+
+.project-links {
+  display: flex;
+  gap: 1.25rem;
+  padding-top: 2rem;
+  border-top: 1px solid #1e2a1a;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+}
+
+.project-links a {
+  font-size: 0.82rem;
+  color: #9ab88a;
+  text-decoration: none;
+  border-bottom: 1px solid #3a5030;
+  transition: color 0.15s, border-color 0.15s;
+}
+.project-links a:hover { color: #c8e0b8; border-color: #6a9a5a; }
+.project-links a.muted { color: #7a8f74; border-color: #2a322a; }
+.project-links a.muted:hover { color: #9aaa94; border-color: #7a8f74; }
+
+/* ── Home page ── */
+.about-text {
+  font-size: 0.9rem;
+  color: #b0bfaa;
+  line-height: 1.85;
+  max-width: 580px;
+  margin-bottom: 3rem;
+}
+
+.about-text p + p { margin-top: 1rem; }
+
+.project-index { display: flex; flex-direction: column; gap: 0; }
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #1e2a1a;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.project-card:first-child { border-top: 1px solid #1e2a1a; }
+
+.project-card-title {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #e8ede4;
+  transition: color 0.15s;
+}
+
+.project-card:hover .project-card-title { color: #9ab88a; }
+
+.project-card-desc {
+  font-size: 0.82rem;
+  color: #7a8f74;
+  line-height: 1.6;
+}
+
+.project-card-meta {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 0.68rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #6a7d64;
+  background: #1a221a;
+  border: 1px solid #222a1e;
+  border-radius: 3px;
+  padding: 0.15rem 0.5rem;
+}
+
+/* ── Footer ── */
+footer {
+  margin-top: 5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #1e2a1a;
+  font-size: 0.8rem;
+  color: #3d4d38;
+  display: flex;
+  gap: 1.5rem;
+}
+
+footer a {
+  color: #3d4d38;
+  text-decoration: none;
+  border-bottom: 1px solid #222a1e;
+  transition: color 0.15s;
+}
+footer a:hover { color: #9aaa94; }

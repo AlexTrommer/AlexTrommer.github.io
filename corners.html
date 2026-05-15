@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Corner Kick Analysis — Alex Trommer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Alex Trommer</h1>
+    <div class="subtitle">
+      <span>Data Science</span>
+      <span class="dot">·</span>
+      <span>University of Michigan</span>
+      <span class="dot">·</span>
+      <a href="mailto:alextrommer@gmail.com">alextrommer@gmail.com</a>
+      <span class="dot">·</span>
+      <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="index.html" class="nav-link">About</a>
+    <a href="corners.html" class="nav-link active">Corner Kick Analysis</a>
+    <a href="league.html" class="nav-link">League Winner Predictor</a>
+    <a href="xg.html" class="nav-link">xG Dashboard</a>
+  </nav>
+
+  <h2 class="project-title">Ideal Corner Kick Delivery Zones</h2>
+  <p class="project-lead">Where should you aim a corner kick? Using StatsBomb open event data, every delivery is mapped onto a 120×80 pitch and statistical testing identifies which zones produce a meaningful improvement over the 2.9% baseline success rate.</p>
+
+  <div class="stats">
+    <div>
+      <span class="stat-value">GA3</span>
+      <span class="stat-label">Only significant zone</span>
+    </div>
+    <div>
+      <span class="stat-value">6.2%</span>
+      <span class="stat-label">GA3 success rate</span>
+    </div>
+    <div>
+      <span class="stat-value">2.9%</span>
+      <span class="stat-label">Baseline rate</span>
+    </div>
+    <div>
+      <span class="stat-value">p &lt; 0.0001</span>
+      <span class="stat-label">GA3 z-test</span>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Data & setup</h3>
+    <p>Corner kick events from StatsBomb open data. A success is defined as a goal within 10 seconds of the corner. All corners taken from the bottom side of the pitch have their Y coordinates mirrored so every delivery is analyzed relative to the same goal. Short corners — where the ball is played to a nearby teammate rather than delivered into the box — are isolated as a separate category.</p>
+  </div>
+
+  <div class="body-section">
+    <h3>The boxes</h3>
+    <p>In soccer, the <strong style="color:#ccdcc8">18-yard box</strong> (penalty area) is the large rectangle in front of goal — roughly the area where most corners are aimed. The <strong style="color:#ccdcc8">6-yard box</strong> (goal area) is the smaller rectangle directly in front of the goal mouth, spanning only the width of the goal plus a few yards on each side. Deliveries into the 6-yard box are riskier to defend because they arrive very close to goal, but harder to aim accurately. The <strong style="color:#ccdcc8">near post</strong> is the goalpost closer to where the corner is being taken; the <strong style="color:#ccdcc8">back post</strong> (far post) is the one farther away. Back-post deliveries are harder for goalkeepers to reach and give attackers a run-up toward goal.</p>
+  </div>
+
+  <div class="body-section">
+    <h3>Zone classification</h3>
+    <p>Zones follow the framework from Casal et al. (2019), dividing the attacking end of the pitch into nine named regions based on X (depth) and Y (width) coordinates on a 120×80 pitch. Zone names use a letter prefix for area (G = goal area / 6-yard box, C = central 18-yard box, F = front, B = back) and a number for position across the width (1 = near post, 2 = center, 3 = back post).</p>
+    <table style="margin-top:0.75rem">
+      <thead><tr><th>Zone</th><th>Description</th><th>X</th><th>Y</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>GA3</td><td>6-yard box, back/far post</td><td>114–120</td><td>30–36</td></tr>
+        <tr><td>GA2</td><td>6-yard box, center</td><td>114–120</td><td>36–44</td></tr>
+        <tr><td>GA1</td><td>6-yard box, near post</td><td>114–120</td><td>44–50</td></tr>
+        <tr><td>CA3</td><td>18-yard box, back/far post</td><td>108–114</td><td>30–36</td></tr>
+        <tr><td>CA2</td><td>18-yard box, center</td><td>108–114</td><td>36–44</td></tr>
+        <tr><td>CA1</td><td>18-yard box, near post</td><td>108–114</td><td>44–50</td></tr>
+        <tr><td>FZ</td><td>Front of 18-yard box, near-post side</td><td>102–120</td><td>50–62</td></tr>
+        <tr><td>BZ</td><td>Front of 18-yard box, back-post side</td><td>102–120</td><td>18–30</td></tr>
+        <tr><td>Edge</td><td>Edge of 18-yard box, central</td><td>100–108</td><td>30–50</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="body-section">
+    <h3>Delivery locations</h3>
+    <div class="plot-grid">
+      <div class="plot-item">
+        <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/delivery_scatter.png" alt="Corner delivery locations" loading="lazy" />
+        <span class="plot-caption">All delivery endpoints. Green = goal within 10 s, red = no goal. Successful deliveries concentrate near the back post of the six-yard box.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Swing type</h3>
+    <ul>
+      <li>Inswinging: 11,559 attempts, 3.00% success rate</li>
+      <li>Outswinging: 22,487 attempts, 2.84% success rate</li>
+      <li>Chi-squared p = 0.423 — swing type alone has no significant effect on success</li>
+    </ul>
+  </div>
+
+  <div class="body-section">
+    <h3>In-box vs out-of-box</h3>
+    <table style="margin-top:0.5rem">
+      <thead><tr><th>Delivery type</th><th>Count</th><th>Success rate</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>In box</td><td>27,215</td><td>3.19%</td></tr>
+        <tr><td>Out of box</td><td>6,831</td><td>1.73%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem">Chi-squared p = 1.53×10⁻¹⁰ — in-box deliveries significantly outperform out-of-box deliveries.</p>
+  </div>
+
+  <div class="body-section">
+    <h3>Success rate by zone</h3>
+    <div class="plot-grid">
+      <div class="plot-item">
+        <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/zone_heatmap.png" alt="Corner kick success rate by zone" loading="lazy" />
+        <span class="plot-caption">GA3 (back post, six-yard box) leads at 6.2% — more than double any other zone and the only zone to test as statistically significant.</span>
+      </div>
+      <div class="plot-item">
+        <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/short_vs_zones.png" alt="Short corners vs delivery zones" loading="lazy" />
+        <span class="plot-caption">Short corner deliveries (1.87%) underperform every named in-box zone and fall below the overall baseline — the worst strategy across all scenarios.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Zone by swing type</h3>
+    <table style="margin-top:0.5rem">
+      <thead><tr><th>Zone</th><th>Swing</th><th>Count</th><th>Success rate</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>GA3</td><td>inswinging</td><td>329</td><td>6.99%</td></tr>
+        <tr class="highlight-row"><td>GA3</td><td>outswinging</td><td>542</td><td>5.72%</td></tr>
+        <tr><td>CA3</td><td>inswinging</td><td>717</td><td>4.32%</td></tr>
+        <tr><td>CA2</td><td>outswinging</td><td>4,041</td><td>4.31%</td></tr>
+        <tr><td>Edge</td><td>inswinging</td><td>421</td><td>3.56%</td></tr>
+        <tr><td>GA2</td><td>inswinging</td><td>1,774</td><td>3.27%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem">GA3 inswinging vs all others: z = 4.451, p &lt; 0.0001. The zone × swing type interaction model shows no significant interaction effects — GA3 leads under both swing types.</p>
+    <div class="plot-grid" style="margin-top:1rem">
+      <div class="plot-item">
+        <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/swing_zone_heatmap.png" alt="Success rate by zone and swing type" loading="lazy" />
+        <span class="plot-caption">GA3 tops both halves — 7.0% inswinging, 5.7% outswinging. No other zone is consistently strong across swing types.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Logistic regression</h3>
+    <p>Two logistic models were fitted — main effects (zone + swing type) and interactions (zone × swing type). In both, only the GA3 coefficient is statistically significant. All other zones and swing type show no significant independent effect on success probability.</p>
+    <table style="margin-top:0.75rem">
+      <thead><tr><th>Term</th><th>Coef</th><th>p-value</th></tr></thead>
+      <tbody>
+        <tr><td>Intercept (BZ baseline)</td><td>−3.557</td><td>&lt; 0.001</td></tr>
+        <tr class="highlight-row"><td>GA3</td><td>+0.864</td><td>&lt; 0.001</td></tr>
+        <tr><td>CA2</td><td>+0.373</td><td>0.075</td></tr>
+        <tr><td>CA3</td><td>+0.266</td><td>0.252</td></tr>
+        <tr><td>Outswinging</td><td>−0.038</td><td>0.579</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="body-section">
+    <h3>Optimal delivery coordinate</h3>
+    <p>Degree-9 polynomial fits on binned success rates across end_x and end_y coordinates narrow the optimal delivery point to approximately <strong style="color:#9ab88a">x ≈ 113, y ≈ 33</strong> — deep into the six-yard box, back-post side.</p>
+    <div class="plot-row">
+      <div class="plot-item">
+        <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/poly_end_x.png" alt="Success rate vs end_x" loading="lazy" />
+        <span class="plot-caption">Success rate vs end X. Polynomial fit peaks near x ≈ 113.</span>
+      </div>
+      <div class="plot-item">
+        <img src="https://raw.githubusercontent.com/AlexTrommer/ideal_corner_kicks/main/plots/poly_end_y.png" alt="Success rate vs end_y" loading="lazy" />
+        <span class="plot-caption">Success rate vs end Y. Polynomial fit peaks near y ≈ 33 — back-post side.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Recipient body part</h3>
+    <p>Headers at the far post dominate successful outcomes. Non-header contacts (chest, foot) consistently underperform regardless of zone or swing type.</p>
+    <table style="margin-top:0.75rem">
+      <thead><tr><th>Post</th><th>Swing</th><th>Body part</th><th>Count</th><th>Rate</th></tr></thead>
+      <tbody>
+        <tr class="highlight-row"><td>Far post</td><td>outswinging</td><td>Head</td><td>2,485</td><td>8.61%</td></tr>
+        <tr class="highlight-row"><td>Far post</td><td>inswinging</td><td>Head</td><td>1,378</td><td>8.35%</td></tr>
+        <tr class="highlight-row"><td>Near post</td><td>inswinging</td><td>Head</td><td>1,042</td><td>8.06%</td></tr>
+        <tr><td>Near post</td><td>outswinging</td><td>Head</td><td>1,897</td><td>7.33%</td></tr>
+        <tr><td>Near post</td><td>outswinging</td><td>Other</td><td>4,793</td><td>1.79%</td></tr>
+        <tr><td>Far post</td><td>outswinging</td><td>Other</td><td>12,146</td><td>1.48%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="project-links">
+    <a href="https://github.com/AlexTrommer/ideal_corner_kicks" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <a href="https://www.tandfonline.com/doi/full/10.1080/24748668.2019.1677329" target="_blank" rel="noopener" class="muted">Casal et al. (2019) ↗</a>
+  </div>
+
+  <footer>
+    <a href="mailto:alextrommer@gmail.com">alextrommer@gmail.com</a>
+    <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+</body>
+</html>

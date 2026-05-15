@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>xG Dashboard — Alex Trommer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Alex Trommer</h1>
+    <div class="subtitle">
+      <span>Data Science</span>
+      <span class="dot">·</span>
+      <span>University of Michigan</span>
+      <span class="dot">·</span>
+      <a href="mailto:alextrommer@gmail.com">alextrommer@gmail.com</a>
+      <span class="dot">·</span>
+      <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="index.html" class="nav-link">About</a>
+    <a href="corners.html" class="nav-link">Corner Kick Analysis</a>
+    <a href="league.html" class="nav-link">League Winner Predictor</a>
+    <a href="xg.html" class="nav-link active">xG Dashboard</a>
+  </nav>
+
+  <h2 class="project-title">xG Dashboard</h2>
+  <p class="project-lead">An XGBoost expected goals model and interactive dashboard covering the top 5 European leagues, built on ~257,000 shots from Understat (2020–2025). Three situation-specific models handle open play, corners, and set pieces separately, with isotonic calibration. Data refreshes daily via GitHub Actions.</p>
+
+  <div class="stats">
+    <div>
+      <span class="stat-value">257k</span>
+      <span class="stat-label">Shots</span>
+    </div>
+    <div>
+      <span class="stat-value">0.792</span>
+      <span class="stat-label">ROC-AUC</span>
+    </div>
+    <div>
+      <span class="stat-value">0.074</span>
+      <span class="stat-label">Brier score</span>
+    </div>
+    <div>
+      <span class="stat-value">5</span>
+      <span class="stat-label">Leagues</span>
+    </div>
+    <div>
+      <span class="stat-value">3</span>
+      <span class="stat-label">Specialist models</span>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Models</h3>
+    <p>Each shot is routed to a situation-specific XGBoost classifier based on how it was created. All three are wrapped in <code style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:#9ab88a">CalibratedClassifierCV(method="isotonic")</code> and tuned independently via GridSearchCV (3-fold CV, Brier score). Penalties are fixed at 0.76 xG.</p>
+    <table style="margin-top:0.75rem">
+      <thead><tr><th>Model</th><th>Situations</th><th>Key features</th></tr></thead>
+      <tbody>
+        <tr><td>OpenPlay</td><td>Open play, counter-attacks</td><td>Distance, angle, counter-attack proxy, throughball, rebound</td></tr>
+        <tr><td>FromCorner</td><td>Corner kicks</td><td>Header interactions, centrality, weak-angle header</td></tr>
+        <tr><td>SetPiece</td><td>Direct &amp; indirect free kicks</td><td>Distance, angle, shot type</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="body-section">
+    <h3>Features</h3>
+    <p>24 features across geometry (distance, angle, coordinates), shot type flags (header, foot, penalty), interaction terms, zone context, and proxy variables. Because Understat labels counter-attacks as open play, a <code style="font-family:'JetBrains Mono',monospace;font-size:0.82em;color:#9ab88a">fast_break</code> proxy is engineered from the preceding action type to capture counter-attack context without direct tagging.</p>
+  </div>
+
+  <div class="body-section">
+    <h3>Performance</h3>
+    <table style="margin-top:0.75rem">
+      <thead><tr><th>Metric</th><th>This model</th><th>Understat</th></tr></thead>
+      <tbody>
+        <tr><td>ROC-AUC</td><td>0.792</td><td>0.805</td></tr>
+        <tr class="highlight-row"><td>Brier score</td><td>0.074</td><td>0.072</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:0.75rem">The small gap vs Understat is expected — commercial models incorporate freeze-frame data (exact defender positions at the moment of the shot) which Understat does not expose via their public API.</p>
+  </div>
+
+  <div class="project-links">
+    <a href="https://xg-dashboard.up.railway.app" target="_blank" rel="noopener">Live Dashboard ↗</a>
+    <a href="https://github.com/AlexTrommer/xg-dashboard" target="_blank" rel="noopener">View on GitHub ↗</a>
+  </div>
+
+  <footer>
+    <a href="mailto:alextrommer@gmail.com">alextrommer@gmail.com</a>
+    <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>League Winner Predictor — Alex Trommer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Alex Trommer</h1>
+    <div class="subtitle">
+      <span>Data Science</span>
+      <span class="dot">·</span>
+      <span>University of Michigan</span>
+      <span class="dot">·</span>
+      <a href="mailto:alextrommer@gmail.com">alextrommer@gmail.com</a>
+      <span class="dot">·</span>
+      <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="index.html" class="nav-link">About</a>
+    <a href="corners.html" class="nav-link">Corner Kick Analysis</a>
+    <a href="league.html" class="nav-link active">League Winner Predictor</a>
+    <a href="xg.html" class="nav-link">xG Dashboard</a>
+  </nav>
+
+  <h2 class="project-title">League Winner Predictor</h2>
+  <p class="project-lead">Each season, only one team wins each league — and their forwards tend to have significantly higher goal and shot counts than everyone else. This project trains a K-Nearest Neighbors (KNN) classifier to predict whether a given forward's team won the league that season, using only two features: goals scored and shots on target. Trained on 88,310 player-season records across seven European leagues and five seasons, the model achieves 95.45% accuracy.</p>
+
+  <div class="stats">
+    <div>
+      <span class="stat-value">95.45%</span>
+      <span class="stat-label">Final accuracy</span>
+    </div>
+    <div>
+      <span class="stat-value">94.35%</span>
+      <span class="stat-label">Baseline accuracy</span>
+    </div>
+    <div>
+      <span class="stat-value">88,310</span>
+      <span class="stat-label">Player-season records</span>
+    </div>
+    <div>
+      <span class="stat-value">7</span>
+      <span class="stat-label">Leagues · 5 seasons</span>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Dataset</h3>
+    <p>Player-season records from the Premier League, La Liga, Serie A, Bundesliga, Ligue 1, Eredivisie, and Primeira Liga. The model is restricted to forwards with at least five 90-minute appearances, where the goal-scoring signal is strongest. The 2019–20 season is excluded due to the Eredivisie being suspended mid-season.</p>
+  </div>
+
+  <div class="body-section">
+    <h3>Why this works</h3>
+    <p>League-winning teams dominate possession and create more chances — so their forwards rack up noticeably more goals and shots than forwards on lower-finishing sides. This gap is large enough that a simple classifier can pick up on it reliably.</p>
+    <table style="margin-top:0.75rem">
+      <thead><tr><th>Group</th><th>Avg Goals</th><th>Avg Shots on Target</th></tr></thead>
+      <tbody>
+        <tr><td>Non-winners</td><td>6.60</td><td>16.96</td></tr>
+        <tr class="highlight-row"><td>Winners</td><td>13.59</td><td>29.37</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="body-section">
+    <h3>Data cleaning</h3>
+    <ul>
+      <li>Missing goals filled with 0; mislabelled columns corrected; squad-total rows removed</li>
+      <li>Records with goals but zero shots on target — indicating missing data rather than true zeros — imputed using a linear regression model fitted per league</li>
+      <li>Primeira Liga had the most affected rows (452), followed by Ligue 1 (61)</li>
+    </ul>
+  </div>
+
+  <div class="body-section">
+    <h3>Model</h3>
+    <p>KNN classifies each player by looking at the 11 most similar player-seasons in the training data (by goals and shots) and taking a majority vote on whether those neighbors' teams won the league. Hyperparameters were tuned via GridSearchCV across 150 combinations and 5-fold cross-validation.</p>
+    <div class="code-block">
+<span class="key">Features:</span>     <span class="val">Shots On Target, Goals, Season (one-hot encoded)</span>
+<span class="key">Scaler:</span>      <span class="val">StandardScaler on numerical features</span>
+<span class="key">Search:</span>      <span class="val">GridSearchCV — 5-fold CV, accuracy scoring</span>
+
+<span class="key">Best params:</span>
+  <span class="key">n_neighbors</span>  <span class="val">11</span>
+  <span class="key">metric</span>       <span class="val">euclidean</span>
+  <span class="key">weights</span>      <span class="val">uniform</span>
+  <span class="key">CV score</span>     <span class="val">0.9545</span>
+    </div>
+  </div>
+
+  <div class="body-section">
+    <h3>Key findings</h3>
+    <ul>
+      <li>Baseline (goals + shots on target only) already achieved 94.35% — reflecting how cleanly elite forwards separate from the rest of the distribution</li>
+      <li>Adding one-hot encoding on season pushed accuracy to 95.45% — year-to-year variation in league competitiveness is important</li>
+      <li>Optimal k=11 suggests the decision boundary benefits from moderate smoothing</li>
+      <li>Euclidean distance with uniform weights outperformed distance-weighted variants</li>
+    </ul>
+  </div>
+
+  <div class="project-links">
+    <a href="https://github.com/AlexTrommer/League-Winner-Predictor" target="_blank" rel="noopener" class="muted">GitHub ↗</a>
+  </div>
+
+  <footer>
+    <a href="mailto:alextrommer@gmail.com">alextrommer@gmail.com</a>
+    <a href="https://github.com/AlexTrommer" target="_blank" rel="noopener">GitHub</a>
+  </footer>
+
+</body>
+</html>
